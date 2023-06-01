@@ -1,91 +1,67 @@
-import argparse
-import json
 import os
+import argparse
 import requests
-import sys
+import json
 from dotenv import load_dotenv
+from typing import Dict
 
 # Load environment variables from .env file
 load_dotenv()
 
-def get_api_key():
+BASE_URL = 'https://api.search.brave.com/res/v1/web/search'
+HEADERS = {
+    "Accept": "application/json",
+    "X-Subscription-Token": os.getenv('BRAVE_API_KEY')
+}
+
+def get_api_key() -> str:
     api_key = os.getenv('BRAVE_API_KEY')
     if api_key is None:
         api_key = input('Enter your Brave API key: ')
     return api_key
 
+def save_to_file(filename: str, data: Dict):
+    with open(filename, 'w') as f:
+        json.dump(data, f, indent=4)
 
-# YOUR_API_KEY = os.environ.get('BRAVE_API_KEY')
+def list_keys(results):
+    for result in results:
+        print(f"Title: {result['title']}")
+        print(f"Description: {result['description']}")
+        print(f"URL: {result['url']}")
+        print()
 
-# HEADERS = {
-#     'Accept': 'application/json',
-#     'X-Subscription-Token': YOUR_API_KEY,
-# }
+def brave_web_search(query: str, safesearch: str, list_only: bool = False, save: str = None):
+    response = requests.get(
+        BASE_URL, 
+        headers=HEADERS, 
+        params={'q': query, 'safesearch': safesearch}
+    )
+    data = response.json()
+    results = data.get('web', {}).get('results', [])
+    if list_only:
+        list_keys(results)
+    elif save:
+        save_to_file(save, data)
+    else:
+        print(json.dumps(data, indent=4))
 
-def brave_web_search(query):
-    url = 'https://api.search.brave.com/res/v1/web/search'
-    params = {'q': query}
-    response = requests.get(url, headers=HEADERS, params=params)
-    return response.json()
-
-def brave_suggest_search(query, country='US', count=5):
-    url = 'https://api.search.brave.com/res/v1/suggest/search'
-    params = {'q': query, 'country': country, 'count': count}
-    response = requests.get(url, headers=HEADERS, params=params)
-    return response.json()
-
-def brave_spell_check_search(query, country='US'):
-    url = 'https://api.search.brave.com/res/v1/spellcheck/search'
-    params = {'q': query, 'country': country}
-    response = requests.get(url, headers=HEADERS, params=params)
-    return response.json()
-def save_to_file(result, file_path):
-    with open(file_path, 'w') as f:
-        json.dump(result, f, indent=4)
-def brave_web_search(query):
-    url = 'https://api.search.brave.com/res/v1/web/search'
-    params = {'q': query}
-    response = requests.get(url, headers=HEADERS, params=params)
-    return response.json()
-
-def list_results(results):
-    for result in results['web']['results']:
-        print(f'Title: {result["title"]}')
-        print(f'Description: {result["description"]}')
-        print(f'URL: {result["url"]}')
-        print('---')
 def main():
-    api_key = get_api_key()
-    global HEADERS 
-    HEADERS = {
-        "Accept": "application/json",
-        "X-Subscription-Token": api_key
-    }
-    parser = argparse.ArgumentParser()
-    parser.add_argument('command', help="can be one of 'web_search', 'suggest_search', 'spell_check_search'")
-    parser.add_argument('query', help='the search query')
-    parser.add_argument('-s', '--save', help='file path to save the result')
-    parser.add_argument('-l', '--list', action='store_true', help='list only title, description, and url for web_search')
+    parser = argparse.ArgumentParser(description="Search the web with Brave's API.")
+    parser.add_argument("command", help="Command to run. Currently only 'web_search' is supported.")
+    parser.add_argument("query", help="Search query.")
+    parser.add_argument("--safesearchoff", action='store_true', help="Turn off safe search.")
+    parser.add_argument("-s", "--save", help="Save results to file.")
+    parser.add_argument("-l", "--list", action='store_true', help="Only list 'title', 'description' and 'url' from results.")
     args = parser.parse_args()
 
-    if args.command == 'web_search':
-        result = brave_web_search(args.query)
-        if args.list:
-            list_results(result)
-        else:
-            print(result)
-    elif args.command == 'suggest_search':
-        result = brave_suggest_search(args.query)
-        print(result)
-    elif args.command == 'spell_check_search':
-        result = brave_spell_check_search(args.query)
-        print(result)
-    else:
-        print('Invalid command. Use web_search, suggest_search, or spell_check_search.')
-        return
+    safesearch = "off" if args.safesearchoff else "moderate"
 
-    if args.save:
-        save_to_file(result, args.save)
+    if args.command == "web_search":
+        brave_web_search(args.query, safesearch, args.list, args.save)
+    else:
+        print(f"Unknown command: {args.command}")
+        print("Usage: python brave_search.py web_search 'query' [--safesearchoff] [-s savefile.json] [-l]")
 
 if __name__ == "__main__":
     main()
