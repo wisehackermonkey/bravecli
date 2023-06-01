@@ -61,7 +61,7 @@ def main():
         brave_web_search(args.query, safesearch, args.list, args.save)
     else:
         print(f"Unknown command: {args.command}")
-        print("Usage: python brave_search.py web_search 'query' [--safesearchoff] [-s savefile.json] [-l]")
+        print("Usage: python bravecli.py web_search 'query' [--safesearchoff] [-s savefile.json] [-l]")
 
 if __name__ == "__main__":
     main()

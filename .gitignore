@@ -18,3 +18,7 @@ node_modules
 # Folder config file
 Desktop.ini
 output.json
+build
+__pycache__
+.__pycache__
+bravecli.spec

@@ -37,29 +37,29 @@ pip install -r requirements.txt
 ```bash
 
 # Only listing title, description, and url from results
-python brave_search.py web_search "adele dazeem" --list
+python bravecli.py web_search "adele dazeem" --list
 
 # Basic usage with only the required arguments RAW OUTPUT
-python brave_search.py web_search "adele dazeem"
+python bravecli.py web_search "adele dazeem"
 
 
 # Saving results to a file
-python brave_search.py web_search "adele dazeem" --save output.json
+python bravecli.py web_search "adele dazeem" --save output.json
 
 # Turning off safe search
-python brave_search.py web_search "xxx" --safesearchoff
+python bravecli.py web_search "xxx" --safesearchoff
 
 # Turning off safe search and saving results to a file
-python brave_search.py web_search "adele dazeem" --safesearchoff --save output.json
+python bravecli.py web_search "adele dazeem" --safesearchoff --save output.json
 
 # Turning off safe search and only listing title, description, and url from results
-python brave_search.py web_search "xxx" --safesearchoff --list
+python bravecli.py web_search "xxx" --safesearchoff --list
 
 # Saving results to a file and only listing title, description, and url from results
-python brave_search.py web_search "adele dazeem" --save output.json --list
+python bravecli.py web_search "adele dazeem" --save output.json --list
 
 # All options at once
-python brave_search.py web_search "adele dazeem" --safesearchoff --save output.json --list
+python bravecli.py web_search "adele dazeem" --safesearchoff --save output.json --list
 
 ```
 
@@ -72,10 +72,16 @@ python brave_search.py web_search "adele dazeem" --safesearchoff --save output.j
 ### 
 ```bash
 # Install development dependencies
-pip install -r requirements.txt
+pip install -r requirements_dev.txt
 
 # Run tests
-pytest tests/
+pytest 
+
+# or run
+pytest test_bravecli.py
+# how to create exe
+pyinstaller --onefile -i favicon.ico bravecli.py
+
 ```
 
 
@@ -107,38 +113,5 @@ pytest tests/
 by oran collins
 github.com/wisehackermonkey
 oranbusiness@gmail.com
-__DATE___
+20230601
 ```
-<!-- 
-
-# Docker
-### Build
-```bash
-cd ~
-git clone https://github.com/wisehackermonkey/bravecli.git
-cd bravecli
-docker build -t wisehackermonkey/bravecli:latest .  
-```
-### Run
-```bash
-docker run -it --rm --name wisehackermonkey/bravecli:latest  
-```
-### Docker-compose
-```bash
-docker-compose build
-docker-compose up 
-```
-# Publish Docker Image
-```bash
-docker build -t wisehackermonkey/bravecli:latest .
-docker login
-docker push wisehackermonkey/bravecli:latest
-```
-# Deploy on netlify
-```
-npm install netlify-cli -g
-netlify login
-netlify deploy
-netlify deploy --prod
-```
--->
