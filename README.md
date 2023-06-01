@@ -84,6 +84,14 @@ python bravecli.py web_search "adele dazeem" --safesearchoff --save output.json 
 
 ```
 
+./bravecli.exe web_search "adele dazeem" --list | Select-Object -First 5
+./bravecli.exe web_search "adele dazeem" | Select-Object -First 10
+./bravecli.exe web_search "adele dazeem" --save output.json | Select-Object -First 10
+./bravecli.exe web_search "xxx" --safesearchoff | Select-Object -First 10
+./bravecli.exe web_search "adele dazeem" --safesearchoff --save output.json | Select-Object -First 10
+./bravecli.exe web_search "xxx" --safesearchoff --list | Select-Object -First 10
+./bravecli.exe web_search "adele dazeem" --save output.json --list | Select-Object -First 10
+./bravecli.exe web_search "adele dazeem" --safesearchoff --save output.json --list | Select-Object -First 10
 
 
 

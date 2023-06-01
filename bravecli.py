@@ -12,6 +12,7 @@ def get_api_key() -> str:
     api_key = os.getenv('BRAVE_API_KEY')
     if api_key is None:
         print("No API key found. You can get your API key at \n  Signup https://api.search.brave.com/ \n  Get API KEY https://api.search.brave.com/app/keys ")
+        print("Please enter your Brave API key: ", end="")
         api_key = input('Please enter your Brave API key: ')
         with open('.env', 'w') as f:
             f.write(f"BRAVE_API_KEY={api_key}")
