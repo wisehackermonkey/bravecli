@@ -59,6 +59,9 @@ pytest tests/
 ### 
 ```bash
 # For web search
+python brave_search.py web_search 'brave search' -l 
+
+# For saving results to disk 
 python brave_search.py web_search 'brave search' -l -s results.json
 
 # For suggest search
