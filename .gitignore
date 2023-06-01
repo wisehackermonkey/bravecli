@@ -22,3 +22,4 @@ build
 __pycache__
 .__pycache__
 bravecli.spec
+venv

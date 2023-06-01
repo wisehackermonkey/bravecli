@@ -1,11 +1,24 @@
 # bravecli
+
 ----
-[![Open Source Love svg2](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <h2 align="center">bravecli</h2>
+<h4 align="center">A command-line interface for the Brave Search API. </h4>  
+<p align="center">
+  <a href="https://github.com/ellerbrock/open-source-badges/">
+    <img src="https://badges.frapsoft.com/os/v2/open-source.svg?v=103" alt="Open Source Love svg2">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+  </a>
+</p>
 
-<h4 align="center">A command-line interface for the Brave Search API.</h4>
+
+---
+
+<p align="center">
+  <img src="Screenshot_v2.png" alt="bravecli in action">
+</p>
 
 ---
 
@@ -19,21 +32,29 @@
 
  
 # Installation
-### 
+### WINDOWS
 ```bash
 cd ~
 git clone https://github.com/wisehackermonkey/bravecli.git
 cd bravecli
-python3 -m venv venv
-source venv/bin/activate
+python -m venv venv
+venv/Scripts/activate
 pip install -r requirements.txt
+# if your installing for develompent 
+pip install -r requirements_dev.txt
+
 ``` 
 
 
 
+### screenshot
+
+<p align="center">
+  <img src="screenshot_v1.png" alt="bravecli in action">
+</p>
 
 # Usage
-### 
+### Commands
 ```bash
 
 # Only listing title, description, and url from results
