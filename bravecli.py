@@ -8,17 +8,23 @@ from typing import Dict
 # Load environment variables from .env file
 load_dotenv()
 
-BASE_URL = 'https://api.search.brave.com/res/v1/web/search'
-HEADERS = {
-    "Accept": "application/json",
-    "X-Subscription-Token": os.getenv('BRAVE_API_KEY')
-}
-
 def get_api_key() -> str:
     api_key = os.getenv('BRAVE_API_KEY')
     if api_key is None:
-        api_key = input('Enter your Brave API key: ')
+        print("No API key found. You can get your API key at \n  Signup https://api.search.brave.com/ \n  Get API KEY https://api.search.brave.com/app/keys ")
+        api_key = input('Please enter your Brave API key: ')
+        with open('.env', 'w') as f:
+            f.write(f"BRAVE_API_KEY={api_key}")
+        print("API Key Saved to .env")
     return api_key
+
+
+
+BASE_URL = 'https://api.search.brave.com/res/v1/web/search'
+HEADERS = {
+    "Accept": "application/json",
+    "X-Subscription-Token": get_api_key()
+}
 
 def save_to_file(filename: str, data: Dict):
     with open(filename, 'w') as f:
@@ -37,7 +43,11 @@ def brave_web_search(query: str, safesearch: str, list_only: bool = False, save:
         headers=HEADERS, 
         params={'q': query, 'safesearch': safesearch}
     )
+    
     data = response.json()
+    if data.get('type') == 'ErrorResponse':
+        print("Error Please check An error occurred while fetching the data. \n Please check your API key and search parameters.")
+        return
     results = data.get('web', {}).get('results', [])
     if list_only:
         list_keys(results)
