@@ -45,9 +45,10 @@ def brave_web_search(query: str, safesearch: str, list_only: bool = False, save:
     )
     
     data = response.json()
-    # if data.get('type') == 'ErrorResponse':
-    #     print("Error Please check An error occurred while fetching the data. \n Please check your API key and search parameters.")
-    #     return
+    if data.get('type') == 'ErrorResponse':
+        print("Error Please check An error occurred while fetching the data. \n Please check your API key and search parameters.")
+        print(f"BRAVE_API_KEY={os.getenv('BRAVE_API_KEY')}")
+        return -1
     results = data.get('web', {}).get('results', [])
     if list_only:
         list_keys(results)
