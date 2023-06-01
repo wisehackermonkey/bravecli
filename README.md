@@ -46,7 +46,7 @@ pip install -r requirements.txt
 ### 
 ```bash
 # Install development dependencies
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 
 # Run tests
 pytest tests/
