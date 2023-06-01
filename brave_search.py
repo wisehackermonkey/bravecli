@@ -3,14 +3,24 @@ import json
 import os
 import requests
 import sys
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+def get_api_key():
+    api_key = os.getenv('BRAVE_API_KEY')
+    if api_key is None:
+        api_key = input('Enter your Brave API key: ')
+    return api_key
 
 
-YOUR_API_KEY = os.environ.get('BRAVE_API_KEY')
+# YOUR_API_KEY = os.environ.get('BRAVE_API_KEY')
 
-HEADERS = {
-    'Accept': 'application/json',
-    'X-Subscription-Token': YOUR_API_KEY,
-}
+# HEADERS = {
+#     'Accept': 'application/json',
+#     'X-Subscription-Token': YOUR_API_KEY,
+# }
 
 def brave_web_search(query):
     url = 'https://api.search.brave.com/res/v1/web/search'
@@ -44,8 +54,13 @@ def list_results(results):
         print(f'Description: {result["description"]}')
         print(f'URL: {result["url"]}')
         print('---')
-
 def main():
+    api_key = get_api_key()
+    global HEADERS 
+    HEADERS = {
+        "Accept": "application/json",
+        "X-Subscription-Token": api_key
+    }
     parser = argparse.ArgumentParser()
     parser.add_argument('command', help="can be one of 'web_search', 'suggest_search', 'spell_check_search'")
     parser.add_argument('query', help='the search query')
